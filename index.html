@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#5b1900">
+  <meta name="description" content="Estúdio de Voz Essência CK — transforme seus roteiros em uma leitura guiada no fone, com pausas para gravar conteúdos.">
+  <title>Estúdio de Voz | Essência CK</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
+    :root {
+      --wine:#5b1900;--wine-dark:#431304;--plum:#24152e;--muted:#766b70;
+      --cream:#f8f6f3;--paper:#fffefd;--line:#e7dedb;--rose:#f1e7e2;
+      --success:#38705a;--shadow:0 12px 40px rgba(44,22,29,.055);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--cream);color:var(--plum);font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.5}
+    button,input,select,textarea{font:inherit}
+    button{cursor:pointer}
+    button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #b78b7a;outline-offset:3px}
+    .shell{max-width:1370px;margin:auto;padding:0 32px 48px}
+    .topbar{background:var(--wine);color:#fff}
+    .topbar-inner{max-width:1370px;margin:auto;padding:21px 32px;display:flex;justify-content:space-between;align-items:center;gap:20px}
+    .identity{display:flex;align-items:center;gap:15px}
+    .brand-mark{width:49px;height:49px;border:1px solid #d7beba80;display:grid;place-items:center;flex:none;border-radius:50%;font-family:'Playfair Display',Georgia,serif;font-size:20px;letter-spacing:-1px}
+    .brand-title{font-family:'Playfair Display',Georgia,serif;font-size:21px;letter-spacing:.02em;line-height:1.2}
+    .brand-sub{font-size:10px;text-transform:uppercase;letter-spacing:.27em;opacity:.74;margin-top:4px}
+    .top-right{display:flex;align-items:center;gap:10px;font-size:12px;color:#eedbd6;letter-spacing:.035em}
+    .topdot{height:7px;width:7px;border-radius:50%;background:#c0d6c2}
+    .intro{display:flex;justify-content:space-between;gap:24px;align-items:end;padding:42px 0 30px}
+    .eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--wine);font-weight:700}
+    h1,h2,h3,p{margin-top:0}
+    h1{font-family:'Playfair Display',Georgia,serif;font-size:clamp(35px,4vw,53px);font-weight:500;letter-spacing:-.045em;line-height:1.1;margin:10px 0 14px}
+    .intro p{max-width:590px;color:#706970;margin:0;font-size:14px;line-height:1.75}
+    .intro-badge{border:1px solid #e4d4cc;background:#f3ece8;color:var(--wine);border-radius:100px;font-size:12px;display:flex;align-items:center;gap:8px;padding:10px 14px;white-space:nowrap}
+    .intro-badge svg{width:17px;height:17px;flex:none}
+    .app-grid{display:grid;grid-template-columns:minmax(0,1.42fr) minmax(350px,1fr);gap:22px;align-items:start}
+    .card{background:var(--paper);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:17px;overflow:hidden}
+    .card-inner{padding:27px 29px}
+    .section-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:17px}
+    .section-title{font-family:'Playfair Display',Georgia,serif;font-size:24px;line-height:1.2;font-weight:500;letter-spacing:-.025em;margin:0}
+    .section-note{font-size:11px;color:var(--muted)}
+    .mini-label{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:700}
+    .icon{width:18px;height:18px;vertical-align:middle;flex:none;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+    .script-input{display:block;resize:vertical;min-height:380px;width:100%;border:1px solid #e2dbd7;border-radius:12px;background:#fffefa;padding:22px;color:#332631;line-height:1.85;font-size:15px;outline:none;transition:border-color .2s,box-shadow .2s}
+    .script-input:focus{border-color:#a17667;box-shadow:0 0 0 3px #5b19000c}
+    .script-input::placeholder{color:#a49b98}
+    .editor-tools{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:16px;flex-wrap:wrap}
+    .editor-actions{display:flex;flex-wrap:wrap;gap:8px}
+    .text-btn{background:transparent;border:1px solid #e8ded8;border-radius:8px;padding:9px 12px;color:var(--wine);font-size:12px;font-weight:600;display:inline-flex;gap:7px;align-items:center;transition:background .15s}
+    .text-btn:hover{background:var(--rose)}
+    .text-btn svg{width:15px;height:15px}
+    .statbar{border-top:1px solid var(--line);margin-top:24px;padding-top:17px;display:flex;gap:22px;flex-wrap:wrap}
+    .stat{display:flex;flex-direction:column;gap:1px}
+    .stat strong{font-size:17px;font-weight:600;font-variant-numeric:tabular-nums}
+    .stat span{font-size:11px;color:var(--muted)}
+    .save-status{margin-left:auto;align-self:end;display:flex;align-items:center;gap:6px;font-size:11px;color:#807772}
+    .save-status svg{width:13px;height:13px}
+    .right-stack{display:grid;gap:22px}
+    .field{display:flex;flex-direction:column;gap:8px;margin-bottom:19px}
+    .field label{font-size:12px;font-weight:700;color:#42323c}
+    select{width:100%;background:#fffefa;border:1px solid #e2dbd7;border-radius:10px;padding:12px 14px;color:var(--plum);font-size:13px;min-height:46px;cursor:pointer}
+    select:disabled{opacity:.65;cursor:not-allowed}
+    .label-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+    .val-tag{font-size:12px;font-weight:700;color:var(--wine);background:var(--rose);padding:3px 10px;border-radius:30px;min-width:48px;text-align:center}
+    input[type=range]{width:100%;accent-color:var(--wine);cursor:pointer;margin:0;min-height:20px}
+    .range-extremes{display:flex;justify-content:space-between;font-size:10px;color:#99908f}
+    .preset-row{display:flex;gap:8px;flex-wrap:wrap}
+    .preset{border:1px solid #e2d9d3;background:#fffefa;color:#69555d;padding:8px 13px;border-radius:100px;font-size:12px}
+    .preset.active,.preset:hover{border-color:var(--wine);background:var(--rose);color:var(--wine)}
+    .voice-test{display:flex;gap:8px;align-items:center;background:transparent;border:0;color:var(--wine);font-size:12px;font-weight:700;padding:3px 0}
+    .voice-test:hover{text-decoration:underline}
+    .voice-test svg{width:16px;height:16px}
+    .voice-help{margin:10px 0 0;color:var(--muted);font-size:11px;line-height:1.6}
+    .play-card{background:var(--plum);color:#fff;border-color:var(--plum)}
+    .play-card .card-inner{padding:26px 28px 27px}
+    .player-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:21px}
+    .player-label{font-size:11px;text-transform:uppercase;letter-spacing:.2em;color:#eee0eb}
+    .status-pill{font-size:11px;display:flex;align-items:center;gap:6px;border:1px solid #ffffff2a;border-radius:30px;padding:5px 10px;color:#f1e5ef;white-space:nowrap}
+    .status-pill i{display:inline-block;width:6px;height:6px;background:#d3c6cb;border-radius:50%}
+    .status-pill.playing i{background:#b0d1ba;box-shadow:0 0 0 4px #b0d1ba22}
+    .reading-box{background:#ffffff0e;border:1px solid #ffffff16;border-radius:12px;padding:22px;min-height:155px;display:flex;flex-direction:column;justify-content:center;gap:12px}
+    .reading-text{font-family:'Playfair Display',Georgia,serif;font-size:21px;line-height:1.6;font-weight:400;word-break:break-word;max-height:250px;overflow:auto}
+    .reading-text.empty{color:#dfd2db;font-style:italic;font-size:18px}
+    .pause-message{font-size:12px;color:#dfc6d7;display:none;align-items:center;gap:9px}
+    .pause-message.visible{display:flex}
+    .pause-count{border:1px solid #ffffff4a;border-radius:50%;width:29px;height:29px;display:grid;place-items:center;font-size:12px;font-weight:700;color:white;flex:none}
+    .progress-meta{display:flex;justify-content:space-between;align-items:center;margin:16px 0 9px;font-size:11px;color:#dfd2db}
+    .track{height:5px;border-radius:10px;background:#ffffff2a;overflow:hidden}
+    .track-fill{background:#e2bfb4;height:100%;width:0;transition:width .25s}
+    .next-text{font-size:12px;color:#decdde;min-height:40px;line-height:1.55;margin-top:14px}
+    .next-text strong{font-weight:700;color:white}
+    .primary-btn{width:100%;padding:16px 18px;border-radius:10px;background:#fff;color:var(--wine);border:0;display:flex;align-items:center;justify-content:center;gap:10px;font-size:14px;font-weight:700;min-height:56px;margin-top:14px}
+    .primary-btn:hover{background:#f7ebe6}
+    .primary-btn .icon{width:19px;height:19px}
+    .secondary-controls{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:10px}
+    .player-btn{border-radius:9px;border:1px solid #ffffff40;background:#ffffff0b;color:#fff;display:flex;align-items:center;justify-content:center;gap:7px;padding:11px 6px;font-size:12px;min-height:43px}
+    .player-btn:hover:not(:disabled){background:#ffffff20}
+    .player-btn:disabled{opacity:.35;cursor:not-allowed}
+    .player-btn svg{width:16px;height:16px}
+    .player-foot{text-align:center;font-size:11px;color:#d0baca;margin:13px 0 0}
+    .tip-card{margin-top:22px;padding:24px 28px;border:1px solid #eadfd9;background:#f4eee9;border-radius:15px;display:flex;gap:18px;align-items:flex-start}
+    .tip-icon{border:1px solid #dbcac1;display:grid;place-items:center;border-radius:11px;min-width:40px;height:40px;color:var(--wine)}
+    .tip-icon svg{width:19px;height:19px}
+    .tip-card h3{font-family:'Playfair Display',Georgia,serif;font-size:20px;font-weight:500;margin:0 0 6px}
+    .tip-card p{font-size:12px;line-height:1.8;color:#6d6163;margin:0}
+    .bottom{padding:28px 0 0;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:11px;color:#887d7b}
+    .bottom strong{color:var(--wine);font-family:'Playfair Display',Georgia,serif;font-weight:500;font-size:14px}
+    .toast{position:fixed;bottom:23px;left:50%;transform:translate(-50%,20px);border-radius:10px;background:var(--plum);color:white;box-shadow:0 10px 35px #24152e33;padding:12px 18px;font-size:12px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:10;text-align:center;max-width:calc(100vw - 30px)}
+    .toast.show{opacity:1;transform:translate(-50%,0)}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    @media(max-width:950px){.app-grid{grid-template-columns:1fr}.right-stack{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start}.intro{padding-top:30px}.script-input{min-height:310px}.intro-badge{display:none}}
+    @media(max-width:710px){.right-stack{grid-template-columns:1fr}.shell{padding:0 16px 30px}.topbar-inner{padding:16px}.top-right{display:none}.intro{padding:30px 0 22px}.intro p{font-size:13px}.card-inner,.play-card .card-inner{padding:22px}.section-title{font-size:23px}.script-input{min-height:290px;padding:16px}.statbar{gap:15px}.save-status{margin-left:0}.tip-card{padding:20px;gap:12px}.reading-text{font-size:19px}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="identity" aria-label="Essência CK">
+        <div class="brand-mark">CK</div>
+        <div><div class="brand-title">Essência CK</div><div class="brand-sub">Estúdio de conteúdo</div></div>
+      </div>
+      <div class="top-right"><span class="topdot" aria-hidden="true"></span> Seu ponto eletrônico particular</div>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="intro">
+      <div>
+        <div class="eyebrow">ESTÚDIO DE VOZ • ESSÊNCIA CK</div>
+        <h1>Sua voz. Seu ritmo.</h1>
+        <p>Transforme seu roteiro em uma leitura guiada no fone. Ouça uma frase, tenha tempo para repeti-la e grave seus vídeos com mais naturalidade — sem precisar decorar.</p>
+      </div>
+      <div class="intro-badge"><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M7 19v2m10-2v2M7 13h2m4 0h4"/></svg> Notebook + fone Bluetooth</div>
+    </section>
+
+    <div class="app-grid">
+      <div>
+        <section class="card" aria-labelledby="scriptTitle">
+          <div class="card-inner">
+            <div class="section-head"><h2 class="section-title" id="scriptTitle">Seu roteiro</h2><span class="section-note">Edição livre</span></div>
+            <label for="script" class="sr-only">Digite ou cole seu roteiro</label>
+            <textarea id="script" class="script-input" spellcheck="true" placeholder="Cole aqui o roteiro do seu próximo vídeo...&#10;&#10;Dica: escreva como você fala. Cada frase terá uma pausa para você repetir no seu próprio ritmo."></textarea>
+            <div class="editor-tools">
+              <div class="editor-actions">
+                <button class="text-btn" id="sampleBtn" type="button"><svg class="icon" viewBox="0 0 24 24"><path d="m12 3 1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3Z"/><path d="m19 16 .7 2.3L22 19l-2.3.7L19 22l-.7-2.3L16 19l2.3-.7L19 16Z"/></svg> Usar exemplo</button>
+                <button class="text-btn" id="importBtn" type="button"><svg class="icon" viewBox="0 0 24 24"><path d="M12 16V3m-5 8 5 5 5-5M4 18v3h16v-3"/></svg> Importar .txt</button>
+                <button class="text-btn" id="downloadBtn" type="button"><svg class="icon" viewBox="0 0 24 24"><path d="M12 3v13m-5-5 5 5 5-5M4 18v3h16v-3"/></svg> Salvar .txt</button>
+                <button class="text-btn" id="clearBtn" type="button"><svg class="icon" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2m3 0-1 15H6L5 6m5 4v7m4-7v7"/></svg> Limpar</button>
+                <input type="file" id="fileInput" accept=".txt,text/plain" hidden>
+              </div>
+            </div>
+            <div class="statbar" aria-label="Informações do roteiro">
+              <div class="stat"><strong id="wordCount">0</strong><span>Palavras</span></div>
+              <div class="stat"><strong id="sentenceCount">0</strong><span>Frases</span></div>
+              <div class="stat"><strong id="timeEstimate">0 min</strong><span>Tempo estimado*</span></div>
+              <span class="save-status" id="saveStatus"><svg class="icon" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg> Salvo neste navegador</span>
+            </div>
+          </div>
+        </section>
+        <section class="tip-card" aria-label="Dica para gravação">
+          <div class="tip-icon"><svg class="icon" viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="12" rx="2"/><circle cx="12" cy="14" r="3"/><path d="M8 8 9.5 5h5L16 8"/></svg></div>
+          <div><h3>Seu estúdio, do seu jeito.</h3><p>Conecte o fone Bluetooth ao <strong>notebook</strong> e deixe o celular com o microfone exclusivamente para filmar. A voz do roteiro ficará só no seu ouvido. Escolha pausas de 5 a 8 segundos para começar. *O tempo estimado é aproximado.</p></div>
+        </section>
+      </div>
+
+      <div class="right-stack">
+        <section class="card" aria-labelledby="settingsTitle">
+          <div class="card-inner">
+            <div class="section-head"><h2 class="section-title" id="settingsTitle">Ajustes de voz</h2></div>
+            <div class="field">
+              <label for="voiceSelect">Voz de narração</label>
+              <select id="voiceSelect" aria-label="Escolha a voz"><option value="">Voz padrão do navegador</option></select>
+              <button type="button" id="voiceTestBtn" class="voice-test"><svg class="icon" viewBox="0 0 24 24"><polygon points="5 9 9 9 14 5 14 19 9 15 5 15 5 9"/><path d="M18 9a5 5 0 0 1 0 6"/></svg> Ouvir teste da voz</button>
+            </div>
+            <div class="field">
+              <div class="label-row"><label for="speed">Velocidade da leitura</label><span class="val-tag" id="speedValue">0,85×</span></div>
+              <input id="speed" type="range" min="0.65" max="1.3" step="0.05" value="0.85">
+              <div class="range-extremes"><span>Mais devagar</span><span>Mais rápido</span></div>
+            </div>
+            <div class="field" style="margin-bottom:8px">
+              <div class="label-row"><label for="pause">Pausa entre as frases</label><span class="val-tag" id="pauseValue">5 s</span></div>
+              <input id="pause" type="range" min="0" max="15" step="1" value="5">
+              <div class="preset-row" aria-label="Pausas rápidas">
+                <button class="preset" data-seconds="3" type="button">3 segundos</button>
+                <button class="preset active" data-seconds="5" type="button">5 segundos</button>
+                <button class="preset" data-seconds="8" type="button">8 segundos</button>
+              </div>
+            </div>
+            <p class="voice-help" id="voiceHint">As vozes disponíveis dependem do navegador e das vozes instaladas no seu notebook. Recomendamos Google Chrome ou Microsoft Edge.</p>
+          </div>
+        </section>
+
+        <section class="card play-card" aria-labelledby="playTitle">
+          <div class="card-inner">
+            <div class="player-top"><div class="player-label" id="playTitle">Sua leitura guiada</div><span class="status-pill" id="statusPill"><i></i><span id="statusText">Pronta para começar</span></span></div>
+            <div class="reading-box" aria-live="polite" aria-atomic="true">
+              <div class="mini-label" style="color:#d5c2d0" id="currentLabel">NO SEU FONE</div>
+              <div class="reading-text empty" id="currentSentence">Sua próxima frase aparecerá aqui assim que você iniciar.</div>
+              <div class="pause-message" id="pauseMessage"><span class="pause-count" id="countdown">5</span><span>Agora é sua vez de falar para a câmera.</span></div>
+            </div>
+            <div class="progress-meta"><span id="progressText">0 de 0 frases</span><span id="progressPercent">0%</span></div>
+            <div class="track" role="progressbar" id="progressTrack" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Progresso da leitura"><div class="track-fill" id="progressFill"></div></div>
+            <div class="next-text" id="nextSentence">O texto será narrado uma frase por vez, com pausas automáticas.</div>
+            <button class="primary-btn" type="button" id="mainBtn"><svg class="icon" viewBox="0 0 24 24"><polygon points="7 4 20 12 7 20 7 4"/></svg><span id="mainBtnText">Começar leitura</span></button>
+            <div class="secondary-controls">
+              <button class="player-btn" type="button" id="prevBtn" disabled title="Voltar uma frase"><svg class="icon" viewBox="0 0 24 24"><path d="M5 5v14m14-14-10 7 10 7V5Z"/></svg> Anterior</button>
+              <button class="player-btn" type="button" id="nextBtn" disabled title="Pular para próxima frase"><svg class="icon" viewBox="0 0 24 24"><path d="M19 5v14M5 5l10 7-10 7V5Z"/></svg> Próxima</button>
+              <button class="player-btn" type="button" id="stopBtn" disabled title="Encerrar leitura"><svg class="icon" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="1"/></svg> Encerrar</button>
+            </div>
+            <div class="player-foot">Dica: Ctrl + Enter para iniciar ou pausar.</div>
+          </div>
+        </section>
+      </div>
+    </div>
+    <footer class="bottom"><span><strong>Essência CK</strong> · Conteúdo com intenção, no seu tempo.</span><span>Funciona no navegador • Sem mensalidade • Roteiros salvos apenas neste dispositivo</span></footer>
+  </main>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    (() => {
+      'use strict';
+      const $ = id => document.getElementById(id);
+      const synth = window.speechSynthesis;
+      const supportsSpeech = !!(synth && window.SpeechSynthesisUtterance);
+      const STORAGE_KEY = 'essenciaCK_estudioVoz_v1';
+      const EXAMPLE = `Você já parou para pensar no que a sua imagem comunica antes mesmo de você falar?\n\nVestir-se bem não significa seguir todas as tendências.\n\nSignifica fazer escolhas que conversam com quem você é e com a mensagem que deseja transmitir.\n\nQuando você entende seu estilo, tudo começa a fazer mais sentido.\n\nE o seu guarda-roupa deixa de ser um problema e passa a ser uma ferramenta.\n\nMe conta: você sente que suas roupas representam quem você é hoje?`;
+      const script = $('script'), voiceSelect = $('voiceSelect');
+      const speed = $('speed'), pause = $('pause');
+      let voices = [], segments = [], index = 0, state = 'idle', pausedFrom = null;
+      let activeRun = 0, waitTimer = null, tickTimer = null, waitStart = 0, waitDuration = 0, remainingMs = 0;
+      let testMode = false, toastTimer = null, savedTimer = null;
+      const fmt = value => String(value).replace('.', ',');
+      const canStore = () => { try { return typeof localStorage !== 'undefined'; } catch { return false; } };
+
+      function toast(message) {
+        const el = $('toast'); el.textContent = message; el.classList.add('show');
+        clearTimeout(toastTimer); toastTimer = setTimeout(() => el.classList.remove('show'), 3400);
+      }
+      function save() {
+        if (!canStore()) { $('saveStatus').textContent = 'Salvamento local indisponível'; return; }
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify({text:script.value, voice:voiceSelect.value, speed:speed.value, pause:pause.value}));
+          $('saveStatus').textContent = '✓ Salvo neste navegador';
+        } catch { $('saveStatus').textContent = 'Salvamento local indisponível'; }
+      }
+      function scheduleSave() {
+        $('saveStatus').textContent = 'Salvando…';clearTimeout(savedTimer); savedTimer = setTimeout(save, 250);
+      }
+      function restore() {
+        if (!canStore()) return;
+        try {
+          const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+          if (!data) return;
+          if (typeof data.text === 'string') script.value = data.text;
+          if (data.speed && +data.speed >= .65 && +data.speed <= 1.3) speed.value = data.speed;
+          if (data.pause != null && +data.pause >= 0 && +data.pause <= 15) pause.value = data.pause;
+          if (typeof data.voice === 'string') voiceSelect.dataset.preferred = data.voice;
+        } catch { /* Ignore invalid stored data. */ }
+      }
+      function chunksForLongSentence(sentence, max = 260) {
+        if (sentence.length <= max) return [sentence];
+        const words = sentence.split(/\s+/), chunks = []; let acc = '';
+        for (const word of words) {
+          if (acc && (acc.length + word.length + 1 > max)) { chunks.push(acc); acc = ''; }
+          if (word.length > max) {
+            if (acc) {chunks.push(acc);acc='';}
+            for(let p=0;p<word.length;p+=max) chunks.push(word.slice(p,p+max));
+          } else acc += (acc ? ' ' : '') + word;
+        }
+        if (acc) chunks.push(acc);
+        return chunks;
+      }
+      function getSegments(text) {
+        const lines = text.split(/\n+/).map(s=>s.trim()).filter(Boolean), result = [];
+        let segmenter = null;
+        if (typeof Intl.Segmenter === 'function') {
+          try { segmenter = new Intl.Segmenter('pt-BR', {granularity:'sentence'}); } catch {}
+        }
+        for (const line of lines) {
+          let sentences;
+          if (segmenter) sentences = [...segmenter.segment(line)].map(item=>item.segment.trim());
+          else sentences = line.split(/(?<=[.!?…])\s+/);
+          for (const s of sentences) {
+            if (s.trim()) result.push(...chunksForLongSentence(s.trim()));
+          }
+        }
+        return result.filter(Boolean);
+      }
+      function selectedVoice() {
+        return voices.find(v => v.voiceURI === voiceSelect.value) || null;
+      }
+      function loadVoices() {
+        if (!supportsSpeech) return;
+        const received = synth.getVoices();
+        if (!received.length && voices.length) return;
+        voices = received.slice().sort((a,b) => {
+          const pt = v => /^pt(-|$)/i.test(v.lang) ? 0 : 1;
+          return pt(a)-pt(b) || (a.lang || '').localeCompare(b.lang || '') || a.name.localeCompare(b.name);
+        });
+        const requested = voiceSelect.dataset.preferred ?? voiceSelect.value;
+        const selectedBefore = voiceSelect.value;
+        voiceSelect.replaceChildren(new Option('Automática (padrão do navegador)', ''));
+        for (const voice of voices) {
+          voiceSelect.add(new Option(`${voice.name} — ${voice.lang}${voice.default ? ' · padrão' : ''}`, voice.voiceURI));
+        }
+        const defaultPt = voices.find(v=>/^pt-BR$/i.test(v.lang)) || voices.find(v=>/^pt/i.test(v.lang));
+        const choice = voices.some(v=>v.voiceURI === requested) ? requested :
+          (voices.some(v=>v.voiceURI === selectedBefore) ? selectedBefore : (defaultPt?.voiceURI || ''));
+        voiceSelect.value = choice;
+        voiceSelect.dataset.preferred = choice;
+        if (!voices.some(v=>/^pt/i.test(v.lang))) {
+          $('voiceHint').textContent = 'Não encontramos uma voz em português instalada. Você pode adicionar uma voz portuguesa nas configurações de fala do Windows ou tentar o Microsoft Edge.';
+        } else $('voiceHint').textContent = 'Prefira uma voz em português (Brasil). As opções variam conforme seu navegador e as vozes instaladas no notebook.';
+      }
+      function estimate() {
+        const text = script.value.trim(), words = text ? text.split(/\s+/).length : 0;
+        const parts = getSegments(text), count = parts.length;
+        const spokenSec = (words / (150 * (+speed.value))) * 60;
+        const pausesSec = Math.max(0,count-1) * (+pause.value);
+        const totalSec = Math.round(spokenSec + pausesSec);
+        $('wordCount').textContent = words.toLocaleString('pt-BR');
+        $('sentenceCount').textContent = count.toLocaleString('pt-BR');
+        $('timeEstimate').textContent = totalSec < 60 ? `${totalSec} s` : `${Math.floor(totalSec/60)} min ${String(totalSec%60).padStart(2,'0')} s`;
+      }
+      function updateSettings() {
+        $('speedValue').textContent = `${fmt((+speed.value).toFixed(2).replace(/0$/,''))}×`;
+        $('pauseValue').textContent = `${pause.value} s`;
+        document.querySelectorAll('.preset').forEach(b => b.classList.toggle('active',b.dataset.seconds === pause.value));
+        estimate(); scheduleSave();
+      }
+      function clearTimers() {
+        if (waitTimer !== null) { clearTimeout(waitTimer); waitTimer = null; }
+        if (tickTimer !== null) { clearInterval(tickTimer); tickTimer = null; }
+      }
+      function clearSpeech() {try {synth?.cancel();} catch {}}
+      function render() {
+        const total = segments.length, current = segments[index] || '';
+        const active = state !== 'idle';
+        let label = 'Pronta para começar';
+        if (testMode) label = 'Testando voz';
+        else if (state === 'speaking') label = 'Ouvindo frase';
+        else if (state === 'waiting') label = 'Sua vez de falar';
+        else if (state === 'paused') label = 'Leitura pausada';
+        $('statusText').textContent = label;
+        $('statusPill').classList.toggle('playing',state === 'speaking' || state === 'waiting' || testMode);
+        $('currentLabel').textContent = state === 'waiting' || (state==='paused' && pausedFrom==='waiting') ? 'AGORA REPITA PARA A CÂMERA' : 'NO SEU FONE';
+        const reading = $('currentSentence');
+        reading.classList.toggle('empty',!active);
+        reading.textContent = active ? current : 'Sua próxima frase aparecerá aqui assim que você iniciar.';
+        $('pauseMessage').classList.toggle('visible',state==='waiting' || (state === 'paused' && pausedFrom === 'waiting'));
+        $('countdown').textContent = Math.max(0,Math.ceil(remainingMs/1000));
+        const doneCount = active ? index + (state === 'waiting' || (state === 'paused' && pausedFrom === 'waiting') ? 1 : 0) : 0;
+        const pct = total && active ? Math.round(100 * doneCount / total) : 0;
+        $('progressText').textContent = `${active ? index+1 : 0} de ${active ? total : getSegments(script.value).length} frases`;
+        $('progressPercent').textContent = `${pct}%`;
+        $('progressFill').style.width = `${pct}%`;
+        $('progressTrack').setAttribute('aria-valuenow', String(pct));
+        const next = segments[index+1];
+        $('nextSentence').textContent = active && next ? `Próxima: “${next}”` : active ? 'Você está na última frase do roteiro.' : 'O texto será narrado uma frase por vez, com pausas automáticas.';
+        const iconPlay = '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><polygon points="7 4 20 12 7 20 7 4"/></svg>';
+        const iconPause = '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>';
+        $('mainBtn').querySelector('svg')?.remove();
+        $('mainBtn').insertAdjacentHTML('afterbegin', state === 'speaking' || state === 'waiting' ? iconPause : iconPlay);
+        $('mainBtnText').textContent = state === 'idle' ? 'Começar leitura' : state === 'paused' ? 'Continuar leitura' : 'Pausar leitura';
+        $('prevBtn').disabled = !active;
+        $('nextBtn').disabled = !active || index >= total - 1;
+        $('stopBtn').disabled = !active && !testMode;
+      }
+      function stop(silent=false) {
+        activeRun++;
+        clearTimers(); clearSpeech();
+        testMode = false; segments=[]; index=0; pausedFrom=null; remainingMs=0; state='idle';
+        render();
+        if(!silent) toast('Leitura encerrada. Seu roteiro continua salvo.');
+      }
+      function finish() {
+        activeRun++; clearTimers(); clearSpeech(); testMode=false;
+        state='idle'; pausedFrom=null; remainingMs=0; segments=[]; index=0;
+        render(); toast('Roteiro concluído! Boa gravação.');
+      }
+      function beginWait(runId) {
+        if (runId !== activeRun) return;
+        if (index >= segments.length - 1) { finish(); return; }
+        const milliseconds = +pause.value * 1000;
+        if (!milliseconds) {index++; speakCurrent(runId); return;}
+        remainingMs = milliseconds; startWait(runId);
+      }
+      function startWait(runId) {
+        clearTimers();state='waiting';waitStart=Date.now();
+        const duration = remainingMs;waitDuration = duration;
+        tickTimer = setInterval(() => {
+          if (runId !== activeRun || state !== 'waiting') return;
+          remainingMs=Math.max(0,duration-(Date.now()-waitStart));
+          $('countdown').textContent=Math.ceil(remainingMs/1000);
+        },110);
+        waitTimer=setTimeout(() => {
+          if(runId !== activeRun || state !== 'waiting') return;
+          clearTimers();remainingMs=0;index++;speakCurrent(runId);
+        }, duration);
+        render();
+      }
+      function speakCurrent(runId) {
+        if (runId !== activeRun) return;
+        if (index >= segments.length) { finish(); return; }
+        state='speaking';pausedFrom=null;remainingMs=0;
+        render();
+        const utterance = new SpeechSynthesisUtterance(segments[index]);
+        const voice = selectedVoice();
+        if (voice) utterance.voice = voice;
+        utterance.lang = voice?.lang || 'pt-BR';
+        utterance.rate = +speed.value; utterance.pitch=1; utterance.volume=1;
+        utterance.onend = () => {if (runId===activeRun && state==='speaking') beginWait(runId);};
+        utterance.onerror = (event) => {
+          if(runId!==activeRun || state==='idle') return;
+          if(event.error==='canceled'||event.error==='interrupted') return;
+          stop(true);toast('Não foi possível reproduzir a voz. Verifique as vozes do computador e tente o Chrome ou Edge.');
+        };
+        try {synth.speak(utterance);} catch {stop(true);toast('O navegador não conseguiu iniciar a narração.');}
+      }
+      function start() {
+        if (!supportsSpeech) {toast('Este navegador não oferece leitura em voz alta. Abra no Chrome ou Microsoft Edge.');return;}
+        const parts = getSegments(script.value.trim());
+        if (!parts.length) {script.focus();toast('Cole ou escreva seu roteiro antes de começar.');return;}
+        stop(true);segments=parts;index=0;testMode=false;
+        const runId = activeRun;
+        speakCurrent(runId);
+      }
+      function pausePlayback() {
+        if(state==='speaking') {
+          try{synth.pause();}catch{};
+          pausedFrom='speaking';state='paused';render();
+        } else if(state==='waiting') {
+          remainingMs=Math.max(0,waitDuration-(Date.now()-waitStart));
+          clearTimers();pausedFrom='waiting';state='paused';render();
+        }
+      }
+      function resumePlayback() {
+        if(state!=='paused') return;
+        if(pausedFrom==='speaking') {state='speaking';pausedFrom=null;try{synth.resume();}catch{};render();}
+        else if(pausedFrom==='waiting') {pausedFrom=null;startWait(activeRun);}
+      }
+      function move(by) {
+        if(state==='idle') return;
+        const target = Math.min(Math.max(index+by,0),segments.length-1);
+        activeRun++;clearTimers();clearSpeech();
+        index=target;remainingMs=0;pausedFrom=null;
+        speakCurrent(activeRun);
+      }
+      function testVoice() {
+        if(!supportsSpeech){toast('Leitura de voz indisponível neste navegador.');return;}
+        stop(true);testMode=true;render();
+        const runId=activeRun;
+        const u=new SpeechSynthesisUtterance('Olá! Esta é a voz que vai acompanhar você durante a gravação. Ouça, repita e brilhe!');
+        const v=selectedVoice();if(v)u.voice=v;
+        u.lang=v?.lang||'pt-BR';u.rate=+speed.value;
+        u.onend=()=>{if(runId===activeRun){testMode=false;render();}};
+        u.onerror=()=>{if(runId===activeRun){testMode=false;render();toast('Falha ao testar a voz. Verifique as configurações do computador.');}};
+        try{synth.speak(u);}catch{testMode=false;render();toast('Não foi possível testar a voz.');}
+      }
+
+      script.addEventListener('input',() => {if(state!=='idle'||testMode) stop(true);estimate();render();scheduleSave();});
+      speed.addEventListener('input',updateSettings);pause.addEventListener('input',updateSettings);
+      document.querySelectorAll('.preset').forEach(btn=>btn.addEventListener('click',()=>{pause.value=btn.dataset.seconds;updateSettings();}));
+      voiceSelect.addEventListener('change',()=>{voiceSelect.dataset.preferred=voiceSelect.value;save();});
+      $('mainBtn').addEventListener('click',()=>{
+        if(state==='idle')start();else if(state==='paused')resumePlayback();else pausePlayback();
+      });
+      $('prevBtn').addEventListener('click',()=>move(-1));$('nextBtn').addEventListener('click',()=>move(1));
+      $('stopBtn').addEventListener('click',()=>stop());$('voiceTestBtn').addEventListener('click',testVoice);
+      $('sampleBtn').addEventListener('click',()=>{
+        if(script.value.trim() && !confirm('Substituir o seu roteiro atual pelo exemplo?')) return;
+        if(state!=='idle'||testMode)stop(true);
+        script.value=EXAMPLE;estimate();render();save();toast('Exemplo carregado. Você já pode iniciar a leitura.');
+      });
+      $('clearBtn').addEventListener('click',()=>{
+        if(!script.value.trim())return;
+        if(!confirm('Apagar o roteiro? Você pode antes salvar uma cópia em .txt.'))return;
+        if(state!=='idle'||testMode)stop(true);
+        script.value='';estimate();render();save();script.focus();
+      });
+      $('importBtn').addEventListener('click',()=>$('fileInput').click());
+      $('fileInput').addEventListener('change',async event=>{
+        const file=event.target.files?.[0];if(!file)return;
+        if(script.value.trim()&&!confirm('Substituir seu roteiro atual pelo arquivo selecionado?')){event.target.value='';return;}
+        try{
+          const text=await file.text();if(state!=='idle'||testMode)stop(true);
+          script.value=text;estimate();render();save();toast('Roteiro importado com sucesso.');
+        }catch{toast('Não foi possível abrir o arquivo de texto.');}
+        event.target.value='';
+      });
+      $('downloadBtn').addEventListener('click',()=>{
+        if(!script.value.trim()){toast('Não há texto para salvar.');return;}
+        const blob=new Blob(['\ufeff',script.value],{type:'text/plain;charset=utf-8'});
+        const url=URL.createObjectURL(blob),a=document.createElement('a');
+        a.href=url;a.download='roteiro-essencia-ck.txt';document.body.append(a);a.click();a.remove();
+        setTimeout(()=>URL.revokeObjectURL(url),1000);
+      });
+      document.addEventListener('keydown',event=>{
+        if(event.ctrlKey && event.key==='Enter'){
+          event.preventDefault();
+          if(state==='idle')start();else if(state==='paused')resumePlayback();else pausePlayback();
+        }
+        if(event.key==='Escape' && state!=='idle'){stop(true);toast('Leitura encerrada.');}
+      });
+      // If the computer navigates away, release speech and pending timers.
+      window.addEventListener('pagehide',()=>{activeRun++;clearTimers();clearSpeech();});
+      restore();
+      $('speedValue').textContent=`${fmt((+speed.value).toFixed(2).replace(/0$/,''))}×`;
+      $('pauseValue').textContent=`${pause.value} s`;
+      document.querySelectorAll('.preset').forEach(b=>b.classList.toggle('active',b.dataset.seconds===pause.value));
+      estimate();render();
+      if(supportsSpeech){loadVoices();if('onvoiceschanged' in synth)synth.addEventListener('voiceschanged',loadVoices);}
+      else {$('voiceHint').textContent='Leitura de voz indisponível. Abra este arquivo no Google Chrome ou Microsoft Edge atualizados.';$('voiceSelect').disabled=true;}
+    })();
+  </script>
+</body>
+</html>
